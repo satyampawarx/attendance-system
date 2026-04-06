@@ -1,0 +1,49 @@
+body {
+    font-family: Arial;
+    margin: 10px;
+}
+
+h2 {
+    background: #34495e;
+    color: white;
+    padding: 10px;
+    font-size: 18px;
+}
+
+input, select {
+    padding: 8px;
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+    font-size: 14px;
+}
+
+table, th, td {
+    border: 1px solid black;
+    padding: 6px;
+    text-align: center;
+}
+
+button, input[type=submit] {
+    padding: 10px;
+    background: #2ecc71;
+    color: white;
+    border: none;
+    width: 100%;
+    margin-top: 10px;
+}
+
+@media only screen and (max-width: 600px) {
+    table {
+        font-size: 12px;
+    }
+
+    h2 {
+        font-size: 16px;
+    }
+}
