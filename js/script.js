@@ -30,3 +30,8 @@ function countGender() {
     document.getElementById("femaleCount").innerText = female;
     document.getElementById("totalCount").innerText = male + female;
 }
+function disableBtn(btn){
+    btn.disabled = true;
+    btn.value = "Saving...";
+    btn.form.submit();
+}

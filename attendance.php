@@ -35,7 +35,7 @@ Total: <span id="totalCount">0</span>
 </h3>
 
 <br>
-<input type="submit" value="Save Attendance">
+<input type="submit" value="Save Attendance" onclick="disableBtn(this)">
 
 </form>
 
