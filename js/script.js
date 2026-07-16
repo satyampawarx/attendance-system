@@ -1,13 +1,20 @@
 function addRow() {
     var table = document.getElementById("table");
     var row = table.insertRow();
+    
+    // PHP kadun aalela time
+    var timeValue = typeof defaultSessionTime !== 'undefined' ? defaultSessionTime : '';
 
-    // Datalist link properly map keli details input sobat
+    // name input madhe placeholder update kela ahe ani oninput validation lavla ahe
     row.innerHTML = `
-        <td><input type="text" name="name[]" list="khojiNames" autocomplete="off" placeholder="Select/Type"></td>
-        <td><input type="text" name="batch[]"></td>
-        <td><input type="text" name="mobile[]"></td>
-        <td><input type="text" name="time[]"></td>
+        <td>
+            <input type="text" name="name[]" list="khojiNames" autocomplete="off" 
+                   placeholder="Name (English)" 
+                   oninput="this.value = this.value.replace(/[^a-zA-Z\\s]/g, '')" required>
+        </td>
+        <td><input type="text" name="batch[]" list="khojiBatches" autocomplete="off" placeholder="Batch"></td>
+        <td><input type="text" name="mobile[]" list="khojiMobiles" autocomplete="off" placeholder="Mobile"></td>
+        <td><input type="text" name="time[]" value="${timeValue}"></td>
         <td>
             <select name="gender[]" onchange="countGender()">
                 <option>Male</option>
@@ -16,6 +23,8 @@ function addRow() {
         </td>
     `;
 }
+
+// Baki khalcha countGender() aani disableBtn() function same rahil...
 
 function countGender() {
     var genders = document.querySelectorAll("select[name='gender[]']");

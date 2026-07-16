@@ -6,6 +6,7 @@ dbname=attendance
 user=neondb_owner
 password=npg_aM9uDmfJd3Fg
 sslmode=require
+options='endpoint=ep-wandering-sea-a16rzjhf'
 ");
 
 if(!$conn){

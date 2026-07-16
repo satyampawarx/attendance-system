@@ -21,54 +21,94 @@ $female = 0;
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="css/style.css">
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
 <style>
-.report-box{
+body {
+    background-color: #f4f7fb;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.report-box {
     width: 90%;
-    margin: auto;
-    border: 3px solid black;
-    padding: 12px;
+    max-width: 900px;
+    margin: 20px auto;
+    border: 2px solid #333;
+    padding: 20px;
     background: white;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+    font-size: 14px;
+}
+
+th, td {
+    border: 1px solid black;
+    padding: 8px;
+    text-align: center;
+}
+
+.title-row {
+    background: #d9d9d9;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.header-blue {
+    background: #b8cce4;
+    font-weight: bold;
+}
+
+.info-cell {
+    background: #ddebf7;
+    font-weight: bold;
+}
+
+/* Action Buttons Styling */
+.action-buttons {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.btn-action {
+    padding: 10px 15px;
+    margin: 5px;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    transition: 0.2s;
+}
+
+.btn-print { background-color: #607d8b; }
+.btn-excel { background-color: #4caf50; }
+.btn-image { background-color: #ff9800; }
+
+.btn-action:hover {
+    transform: translateY(-2px);
+    opacity: 0.9;
 }
 
 @media print {
-
-    button {
+    .action-buttons {
         display: none;
     }
-
     body {
         -webkit-print-color-adjust: exact;
         print-color-adjust: exact;
+        background: white;
     }
-
-    table {
-        border-collapse: collapse;
+    .report-box {
+        border: none;
+        box-shadow: none;
         width: 100%;
-        font-size: 12px;
     }
-
-    th, td {
-        border: 1px solid black;
-        padding: 6px;
-        text-align: center;
-    }
-
-    .title-row {
-        background: #d9d9d9;
-        font-size: 18px;
-        font-weight: bold;
-    }
-
-    .header-blue {
-        background: #b8cce4;
-        font-weight: bold;
-    }
-
-    .info-cell {
-        background: #ddebf7;
-        font-weight: bold;
-    }
-
     @page {
         size: A4;
         margin: 10mm;
@@ -79,7 +119,7 @@ $female = 0;
 </head>
 <body>
 
-<div class="report-box">
+<div class="report-box" id="reportContent">
 
 <table border="1" width="100%">
 
@@ -98,7 +138,7 @@ $female = 0;
 <td class="info-cell">प्रवचन / सत्र</td>
 <td><?php echo $session['session_name']; ?></td>
 <td class="info-cell">तारीख</td>
-<td colspan="3"><?php echo $session['session_date']; ?></td>
+<td colspan="3"><?php echo date("d-m-Y", strtotime($session['session_date'])); ?></td>
 </tr>
 
 <tr>
@@ -158,10 +198,37 @@ while($row = pg_fetch_assoc($result)){
 
 </div>
 
-<br>
-<button onclick="window.print()">Print Report</button>
-<a href="export_excel.php">
-    <button>Download Excel</button>
-</a>
+<div class="action-buttons">
+    <button class="btn-action btn-print" onclick="window.print()">🖨️ Print Report</button>
+    
+    <a href="export_excel.php" style="text-decoration: none;">
+        <button class="btn-action btn-excel">📊 Download Excel</button>
+    </a>
+    
+    <button class="btn-action btn-image" onclick="downloadAsImage()">📸 Download as Image</button>
+</div>
+
+<script>
+function downloadAsImage() {
+    var reportBox = document.getElementById("reportContent");
+    
+    // Scale 2 kela ahe mhanje image chi quality HD rahil
+    html2canvas(reportBox, {scale: 2, backgroundColor: "#ffffff"}).then(function(canvas) {
+        var link = document.createElement('a');
+        
+        // Aajchi date kadhun file navala attach karne
+        var today = new Date();
+        var dd = String(today.getDate()).padStart(2, '0');
+        var mm = String(today.getMonth() + 1).padStart(2, '0'); // January is 0!
+        var yyyy = today.getFullYear();
+        var formattedDate = dd + '-' + mm + '-' + yyyy;
+        
+        link.download = 'Attendance_Report_' + formattedDate + '.png';
+        link.href = canvas.toDataURL("image/png");
+        link.click();
+    });
+}
+</script>
+
 </body>
 </html>
