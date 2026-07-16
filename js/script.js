@@ -2,11 +2,12 @@ function addRow() {
     var table = document.getElementById("table");
     var row = table.insertRow();
 
+    // Datalist link properly map keli details input sobat
     row.innerHTML = `
-        <td><input name="name[]"></td>
-        <td><input name="batch[]"></td>
-        <td><input name="mobile[]"></td>
-        <td><input name="time[]"></td>
+        <td><input type="text" name="name[]" list="khojiNames" autocomplete="off" placeholder="Select/Type"></td>
+        <td><input type="text" name="batch[]"></td>
+        <td><input type="text" name="mobile[]"></td>
+        <td><input type="text" name="time[]"></td>
         <td>
             <select name="gender[]" onchange="countGender()">
                 <option>Male</option>
@@ -30,6 +31,7 @@ function countGender() {
     document.getElementById("femaleCount").innerText = female;
     document.getElementById("totalCount").innerText = male + female;
 }
+
 function disableBtn(btn){
     btn.disabled = true;
     btn.value = "Saving...";
