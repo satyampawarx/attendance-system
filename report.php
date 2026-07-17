@@ -121,7 +121,15 @@ th, td {
 
 <div class="report-box" id="reportContent">
 
-<table border="1" width="100%">
+    <!-- Navin Title Section Add Kela -->
+    <div style="text-align: center; margin-bottom: 20px;">
+        <div style="font-size: 40px; font-weight: bold; color: #ff5722; letter-spacing: 2px;">स्वानंद</div>
+        <div style="font-size: 20px; font-weight: 600; color: #555; margin-top: 5px;">तेजस्थान</div>
+    </div>
+    <!-- Title Section End -->
+
+    <table border="1" width="100%">
+        <!-- Pudhcha table cha code jasacha tasa rahil -->
 
 <tr class="title-row">
 <th colspan="5">प्रवचन / सत्र उपस्थिति रजिस्टर</th>

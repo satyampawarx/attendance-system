@@ -116,8 +116,8 @@ tr:hover {
         width: 100%;
     }
 
-    /* Mobile var table header chi garaj nahi karan placeholder ahet */
-    thead tr {
+   /* Mobile var table header (grey boxes) chi garaj nahi */
+    th, thead tr {
         display: none;
     }
 
