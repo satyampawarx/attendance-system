@@ -2,24 +2,38 @@
 include 'db.php';
 session_start();
 
-$session_id = $_SESSION['session_id'];
+$session_id = $_SESSION['session_id'] ?? '';
 
-// session info
-$s = pg_query($conn, "SELECT * FROM session_info WHERE id='$session_id'");
+if ($session_id === '') {
+    die("Session mahiti sapadli nahi. Please Session Information page varun suru kara.");
+}
+
+// session info -- parameterized
+$s = pg_query_params($conn, "SELECT * FROM session_info WHERE id=$1", [$session_id]);
 $session = pg_fetch_assoc($s);
 
-// attendance
-$result = pg_query($conn, "SELECT * FROM attendance WHERE session_id='$session_id'");
+if (!$session) {
+    die("Session sapadle nahi.");
+}
+
+// attendance -- parameterized
+$result = pg_query_params($conn, "SELECT * FROM attendance WHERE session_id=$1", [$session_id]);
 
 $male = 0;
 $female = 0;
+
+function h($v) {
+    return htmlspecialchars($v ?? '', ENT_QUOTES, 'UTF-8');
+}
 ?>
 
 <!DOCTYPE html>
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-
+<meta name="theme-color" content="#6a11cb">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.png">
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
@@ -121,15 +135,12 @@ th, td {
 
 <div class="report-box" id="reportContent">
 
-    <!-- Navin Title Section Add Kela -->
     <div style="text-align: center; margin-bottom: 20px;">
         <div style="font-size: 40px; font-weight: bold; color: #ff5722; letter-spacing: 2px;">स्वानंद</div>
         <div style="font-size: 20px; font-weight: 600; color: #555; margin-top: 5px;">तेजस्थान</div>
     </div>
-    <!-- Title Section End -->
 
     <table border="1" width="100%">
-        <!-- Pudhcha table cha code jasacha tasa rahil -->
 
 <tr class="title-row">
 <th colspan="5">प्रवचन / सत्र उपस्थिति रजिस्टर</th>
@@ -137,23 +148,23 @@ th, td {
 
 <tr>
 <td class="info-cell">दिन</td>
-<td><?php echo $session['day']; ?></td>
+<td><?php echo h($session['day']); ?></td>
 <td class="info-cell">समय</td>
-<td colspan="3"><?php echo $session['time']; ?></td>
+<td colspan="3"><?php echo h($session['time']); ?></td>
 </tr>
 
 <tr>
 <td class="info-cell">प्रवचन / सत्र</td>
-<td><?php echo $session['session_name']; ?></td>
+<td><?php echo h($session['session_name']); ?></td>
 <td class="info-cell">तारीख</td>
-<td colspan="3"><?php echo date("d-m-Y", strtotime($session['session_date'])); ?></td>
+<td colspan="3"><?php echo h(date("d-m-Y", strtotime($session['session_date']))); ?></td>
 </tr>
 
 <tr>
 <td class="info-cell">सत्याचार्य</td>
-<td><?php echo $session['satyacharya']; ?></td>
+<td><?php echo h($session['satyacharya']); ?></td>
 <td class="info-cell">सत्यप्रबंधक</td>
-<td colspan="3"><?php echo $session['satyapramukh']; ?></td>
+<td colspan="3"><?php echo h($session['satyapramukh']); ?></td>
 </tr>
 
 <tr>
@@ -169,17 +180,17 @@ th, td {
 </tr>
 
 <?php
-$i=1;
-while($row = pg_fetch_assoc($result)){
-    if($row['gender'] == 'Male') $male++;
+$i = 1;
+while ($row = pg_fetch_assoc($result)) {
+    if ($row['gender'] == 'Male') $male++;
     else $female++;
 
     echo "<tr>
-    <td>".$i++."</td>
-    <td>".$row['name']."</td>
-    <td>".$row['batch']."</td>
-    <td>".$row['mobile']."</td>
-    <td>".$row['attendance_time']."</td>
+    <td>" . $i++ . "</td>
+    <td>" . h($row['name']) . "</td>
+    <td>" . h($row['batch']) . "</td>
+    <td>" . h($row['mobile']) . "</td>
+    <td>" . h($row['attendance_time']) . "</td>
     </tr>";
 }
 ?>
@@ -198,7 +209,7 @@ while($row = pg_fetch_assoc($result)){
 
 <tr>
 <td colspan="2"><b>कुल खोजी</b></td>
-<td><?php echo ($male+$female); ?></td>
+<td><?php echo ($male + $female); ?></td>
 <td colspan="2"></td>
 </tr>
 
@@ -208,33 +219,35 @@ while($row = pg_fetch_assoc($result)){
 
 <div class="action-buttons">
     <button class="btn-action btn-print" onclick="window.print()">🖨️ Print Report</button>
-    
+
     <a href="export_excel.php" style="text-decoration: none;">
         <button class="btn-action btn-excel">📊 Download Excel</button>
     </a>
-    
+
     <button class="btn-action btn-image" onclick="downloadAsImage()">📸 Download as Image</button>
 </div>
 
 <script>
 function downloadAsImage() {
     var reportBox = document.getElementById("reportContent");
-    
-    // Scale 2 kela ahe mhanje image chi quality HD rahil
+
     html2canvas(reportBox, {scale: 2, backgroundColor: "#ffffff"}).then(function(canvas) {
         var link = document.createElement('a');
-        
-        // Aajchi date kadhun file navala attach karne
+
         var today = new Date();
         var dd = String(today.getDate()).padStart(2, '0');
-        var mm = String(today.getMonth() + 1).padStart(2, '0'); // January is 0!
+        var mm = String(today.getMonth() + 1).padStart(2, '0');
         var yyyy = today.getFullYear();
         var formattedDate = dd + '-' + mm + '-' + yyyy;
-        
+
         link.download = 'Attendance_Report_' + formattedDate + '.png';
         link.href = canvas.toDataURL("image/png");
         link.click();
     });
+}
+
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('service-worker.js').catch(function(){});
 }
 </script>
 

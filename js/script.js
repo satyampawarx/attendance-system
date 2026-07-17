@@ -1,57 +1,47 @@
-// 1. Sagle names save thevnyasathi ek empty array banvla
-let allKhojiNames = [];
-
-// Page load zalyavar PHP ne taklele sagle names array madhe gheu aani list rikami karu
-document.addEventListener("DOMContentLoaded", function() {
-    let datalist = document.getElementById("khojiNames");
-    if(datalist) {
-        for (let i = 0; i < datalist.options.length; i++) {
-            allKhojiNames.push(datalist.options[i].value);
-        }
-        datalist.innerHTML = ""; // List rikami kela, mhanje click kelyavar default blank disel
+function handleSuggestion(input, listId) {
+    // Jar Name field asel, tar fakt alphabets allow kara
+    if(listId === 'khojiNames') {
+        input.value = input.value.replace(/[^a-zA-Z\s]/g, '');
     }
-});
 
-// 2. Navin Function (Fakt 3 letters nantar suggestions add karnyasaathi)
-function filterNames(input) {
-    // Special characters restrict karne
-    input.value = input.value.replace(/[^a-zA-Z\s]/g, '');
-    
-    let datalist = document.getElementById("khojiNames");
-    datalist.innerHTML = ""; // Junya suggestions clear karne
-    
-    let typed = input.value.toLowerCase();
-    
-    // Jar 3 kiwa jast letters astil tarach matching options add karne
-    if (typed.length >= 3) {
-        allKhojiNames.forEach(function(name) {
-            if(name.toLowerCase().includes(typed)) {
-                let option = document.createElement("option");
-                option.value = name;
-                datalist.appendChild(option);
-            }
-        });
+    // Jar 3 kiwa tyahun jast letters astil, tarach datalist attach kara
+    if (input.value.length >= 3) {
+        input.setAttribute('list', listId);
+    } else {
+        // 3 peksha kami astil tar suggestions kadhun taka
+        input.removeAttribute('list');
     }
 }
 
-// 3. addRow() madhye Name input la fix list="khojiNames" dyaycha aani oninput function change karyacha
+function handleMobileInput(input) {
+    // Fakt numbers, max 10 digits
+    input.value = input.value.replace(/[^0-9]/g, '').slice(0, 10);
+    if (input.value.length >= 3) {
+        input.setAttribute('list', 'khojiMobiles');
+    } else {
+        input.removeAttribute('list');
+    }
+}
+
 function addRow() {
     var table = document.getElementById("table");
     var row = table.insertRow();
-    
+
     var timeValue = typeof defaultSessionTime !== 'undefined' ? defaultSessionTime : '';
 
     row.innerHTML = `
         <td>
-            <input type="text" name="name[]" list="khojiNames" 
+            <input type="text" name="name[]" 
                    placeholder="Name (English)" 
-                   oninput="filterNames(this)" autocomplete="off" required>
+                   oninput="handleSuggestion(this, 'khojiNames')" autocomplete="off" required>
         </td>
         <td>
             <input type="text" name="batch[]" list="khojiBatches" placeholder="Batch" autocomplete="off">
         </td>
         <td>
-            <input type="text" name="mobile[]" list="khojiMobiles" placeholder="Mobile" autocomplete="off">
+            <input type="tel" name="mobile[]" inputmode="numeric" pattern="[0-9]*" maxlength="10"
+                   placeholder="Mobile" autocomplete="off"
+                   oninput="handleMobileInput(this)">
         </td>
         <td><input type="text" name="time[]" value="${timeValue}"></td>
         <td>
@@ -63,7 +53,6 @@ function addRow() {
     `;
 }
 
-// (Tujhe countGender aani disableBtn functions jasache tase thev)
 function countGender() {
     var genders = document.querySelectorAll("select[name='gender[]']");
     var male = 0;
