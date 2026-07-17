@@ -2,7 +2,7 @@
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
-    padding: 20px;
+    padding: 15px;
     background-color: #f4f7fb;
     color: #333;
 }
@@ -12,7 +12,7 @@ h2 {
     background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
     color: white;
     padding: 18px;
-    font-size: 22px;
+    font-size: 20px;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     text-align: center;
@@ -21,12 +21,12 @@ h2 {
 
 /* Inputs & Select box styling */
 input, select {
-    padding: 10px;
+    padding: 12px; /* Touch saathi size vadhvli */
     width: 100%;
     box-sizing: border-box;
     border: 1px solid #dcdcdc;
     border-radius: 6px;
-    font-size: 14px;
+    font-size: 15px;
     transition: all 0.3s ease;
     background-color: #fafafa;
 }
@@ -38,7 +38,7 @@ input:focus, select:focus {
     background-color: #fff;
 }
 
-/* Clean Table Design */
+/* Clean Table Design (PC/Laptop sathi) */
 table {
     border-collapse: collapse;
     width: 100%;
@@ -96,18 +96,63 @@ tr:hover {
     box-shadow: 0 2px 8px rgba(0,0,0,0.06);
     color: #555;
     border-left: 5px solid #2575fc;
+    font-size: 15px;
 }
 
 #maleCount, #femaleCount, #totalCount {
     font-weight: 800;
     color: #6a11cb;
-    font-size: 20px;
+    font-size: 18px;
 }
 
-/* Mobile Responsiveness */
-@media only screen and (max-width: 600px) {
-    table { font-size: 13px; }
-    input, select { padding: 8px; }
-    h2 { font-size: 18px; padding: 14px; }
-    .btn-gradient { padding: 12px; }
+/* ====================================================
+   📱 ADVANCED MOBILE RESPONSIVENESS (CARD LAYOUT)
+   ==================================================== */
+@media only screen and (max-width: 768px) {
+    
+    /* Table la form card madhe convert karne */
+    table, thead, tbody, th, td, tr {
+        display: block;
+        width: 100%;
+    }
+
+    /* Mobile var table header chi garaj nahi karan placeholder ahet */
+    thead tr {
+        display: none;
+    }
+
+    /* Pratyek row la ek mast Shadow Card banavla */
+    tr {
+        background: #fff;
+        margin-bottom: 20px;
+        border-radius: 12px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        padding: 15px 10px;
+        border: 1px solid #eaeaea;
+    }
+
+    td {
+        border: none;
+        padding: 6px 5px; /* Spacing adjust kela */
+    }
+
+    /* Zoom in issue prevent karnyasaathi font-size 16px thevla */
+    input, select {
+        font-size: 16px;
+        padding: 14px 10px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+    }
+
+    .btn-gradient, input[type=submit] {
+        padding: 16px;
+        font-size: 18px;
+        border-radius: 10px;
+    }
+
+    .stats-box {
+        margin-top: 20px;
+        padding: 18px;
+        font-size: 16px;
+    }
 }
