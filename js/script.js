@@ -2,18 +2,17 @@ function addRow() {
     var table = document.getElementById("table");
     var row = table.insertRow();
     
-    // PHP kadun aalela time
     var timeValue = typeof defaultSessionTime !== 'undefined' ? defaultSessionTime : '';
 
-    // name input madhe placeholder update kela ahe ani oninput validation lavla ahe
+    // autocomplete="off" 
     row.innerHTML = `
         <td>
-            <input type="text" name="name[]" list="khojiNames" autocomplete="off" 
+            <input type="text" name="name[]" list="khojiNames" 
                    placeholder="Name (English)" 
                    oninput="this.value = this.value.replace(/[^a-zA-Z\\s]/g, '')" required>
         </td>
-        <td><input type="text" name="batch[]" list="khojiBatches" autocomplete="off" placeholder="Batch"></td>
-        <td><input type="text" name="mobile[]" list="khojiMobiles" autocomplete="off" placeholder="Mobile"></td>
+        <td><input type="text" name="batch[]" list="khojiBatches" placeholder="Batch"></td>
+        <td><input type="text" name="mobile[]" list="khojiMobiles" placeholder="Mobile"></td>
         <td><input type="text" name="time[]" value="${timeValue}"></td>
         <td>
             <select name="gender[]" onchange="countGender()">
@@ -24,7 +23,7 @@ function addRow() {
     `;
 }
 
-// Baki khalcha countGender() aani disableBtn() function same rahil...
+
 
 function countGender() {
     var genders = document.querySelectorAll("select[name='gender[]']");

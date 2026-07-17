@@ -1,5 +1,5 @@
 <?php
-// options chi line kadhun takli ahe
+
 $conn = pg_connect("
 host=ep-wandering-sea-a16rzjhf-pooler.ap-southeast-1.aws.neon.tech
 port=5432

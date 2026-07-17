@@ -9,7 +9,7 @@ $session = pg_fetch_assoc($s);
 
 $result = pg_query($conn, "SELECT * FROM attendance WHERE session_id='$session_id'");
 
-// Aajchi date fetch karun file name madhe add keli
+
 $today_date = date("d-m-Y");
 header("Content-Type: application/vnd.ms-excel; charset=UTF-8");
 header("Content-Disposition: attachment; filename=Attendance_Report_{$today_date}.xls");

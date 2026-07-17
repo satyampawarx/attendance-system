@@ -46,13 +46,16 @@ if (isset($conn) && $conn) {
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="css/style.css">
+ 
+    <link rel="stylesheet" href="css/style.css?v=<?php echo time(); ?>">
     
-    <script>
+<script>
         var defaultSessionTime = "<?php echo htmlspecialchars($session_time, ENT_QUOTES, 'UTF-8'); ?>";
     </script>
-    <script src="js/script.js"></script>
+    
+    <script src="js/script.js?v=<?php echo time(); ?>"></script>
 </head>
+ 
 
 <body onload="addRow()">
 
