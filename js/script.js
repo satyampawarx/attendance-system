@@ -1,3 +1,19 @@
+function handleSuggestion(input, listId) {
+    // Jar Name field asel, tar fakt alphabets allow kara
+    if(listId === 'khojiNames') {
+        input.value = input.value.replace(/[^a-zA-Z\s]/g, '');
+    }
+
+    // Jar 3 kiwa tyahun jast letters astil, tarach datalist attach kara
+    if (input.value.length >= 3) {
+        input.setAttribute('list', listId);
+    } else {
+        // 3 peksha kami astil tar suggestions kadhun taka
+        input.removeAttribute('list');
+    }
+}
+
+
 function addRow() {
     var table = document.getElementById("table");
     var row = table.insertRow();
@@ -7,12 +23,20 @@ function addRow() {
     // autocomplete="off" 
     row.innerHTML = `
         <td>
-            <input type="text" name="name[]" list="khojiNames" 
+            <input type="text" name="name[]" 
                    placeholder="Name (English)" 
-                   oninput="this.value = this.value.replace(/[^a-zA-Z\\s]/g, '')" required>
+                   oninput="handleSuggestion(this, 'khojiNames')" autocomplete="off" required>
         </td>
-        <td><input type="text" name="batch[]" list="khojiBatches" placeholder="Batch"></td>
-        <td><input type="text" name="mobile[]" list="khojiMobiles" placeholder="Mobile"></td>
+        <td>
+            <input type="text" name="batch[]" 
+                   placeholder="Batch" 
+                   oninput="handleSuggestion(this, 'khojiBatches')" autocomplete="off">
+        </td>
+        <td>
+            <input type="text" name="mobile[]" 
+                   placeholder="Mobile" 
+                   oninput="handleSuggestion(this, 'khojiMobiles')" autocomplete="off">
+        </td>
         <td><input type="text" name="time[]" value="${timeValue}"></td>
         <td>
             <select name="gender[]" onchange="countGender()">
@@ -22,7 +46,6 @@ function addRow() {
         </td>
     `;
 }
-
 
 
 function countGender() {
