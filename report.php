@@ -44,18 +44,21 @@ body {
 }
 
 .report-box {
-    width: 90%;
+    width: 94%;
     max-width: 900px;
     margin: 20px auto;
     border: 2px solid #333;
-    padding: 20px;
+    padding: 12px;
     background: white;
     box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    box-sizing: border-box;
 }
 
 table {
     border-collapse: collapse;
     width: 100%;
+    max-width: 100%;
+    table-layout: fixed;
     font-size: 14px;
 }
 
@@ -63,33 +66,24 @@ th, td {
     border: 1px solid black;
     padding: 8px;
     text-align: center;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
-/* Mobile var attendee table squish/multi-line-wrap honyapasun vachavnya sathi:
-   ha table horizontally scroll hoईl, pan register cha look/format kharaab honar nahi. */
-.table-scroll {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-}
-
-.attendee-th th,
-.attendee-row td {
-    white-space: nowrap;
-}
+/* Column widths colgroup madhe dilya ahet (khali table madhe) */
 
 @media only screen and (max-width: 600px) {
-    #reportContent table {
-        min-width: 640px;
-    }
     #reportContent {
-        padding: 12px;
+        padding: 8px;
     }
     th, td {
-        font-size: 12.5px;
-        padding: 6px;
+        font-size: 10.5px;
+        padding: 4px 3px;
+    }
+    .title-row {
+        font-size: 14px;
     }
 }
-
 .title-row {
     background: #d9d9d9;
     font-size: 18px;
@@ -165,8 +159,14 @@ th, td {
         <div style="font-size: 20px; font-weight: 600; color: #555; margin-top: 5px;">तेजस्थान</div>
     </div>
 
-    <div class="table-scroll">
     <table border="1" width="100%">
+    <colgroup>
+        <col style="width:10%">
+        <col style="width:28%">
+        <col style="width:15%">
+        <col style="width:22%">
+        <col style="width:25%">
+    </colgroup>
 
 <tr class="title-row">
 <th colspan="5">प्रवचन / सत्र उपस्थिति रजिस्टर</th>
@@ -240,7 +240,6 @@ while ($row = pg_fetch_assoc($result)) {
 </tr>
 
 </table>
-    </div>
 
 </div>
 
