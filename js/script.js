@@ -1,31 +1,51 @@
-function handleSuggestion(input, listId) {
-    // Jar Name field asel, tar fakt alphabets allow kara
-    if(listId === 'khojiNames') {
-        input.value = input.value.replace(/[^a-zA-Z\s]/g, '');
-    }
+// 1. Sagle names save thevnyasathi ek empty array banvla
+let allKhojiNames = [];
 
-    // Jar 3 kiwa tyahun jast letters astil, tarach datalist attach kara
-    if (input.value.length >= 3) {
-        input.setAttribute('list', listId);
-    } else {
-        // 3 peksha kami astil tar suggestions kadhun taka
-        input.removeAttribute('list');
+// Page load zalyavar PHP ne taklele sagle names array madhe gheu aani list rikami karu
+document.addEventListener("DOMContentLoaded", function() {
+    let datalist = document.getElementById("khojiNames");
+    if(datalist) {
+        for (let i = 0; i < datalist.options.length; i++) {
+            allKhojiNames.push(datalist.options[i].value);
+        }
+        datalist.innerHTML = ""; // List rikami kela, mhanje click kelyavar default blank disel
+    }
+});
+
+// 2. Navin Function (Fakt 3 letters nantar suggestions add karnyasaathi)
+function filterNames(input) {
+    // Special characters restrict karne
+    input.value = input.value.replace(/[^a-zA-Z\s]/g, '');
+    
+    let datalist = document.getElementById("khojiNames");
+    datalist.innerHTML = ""; // Junya suggestions clear karne
+    
+    let typed = input.value.toLowerCase();
+    
+    // Jar 3 kiwa jast letters astil tarach matching options add karne
+    if (typed.length >= 3) {
+        allKhojiNames.forEach(function(name) {
+            if(name.toLowerCase().includes(typed)) {
+                let option = document.createElement("option");
+                option.value = name;
+                datalist.appendChild(option);
+            }
+        });
     }
 }
 
-
+// 3. addRow() madhye Name input la fix list="khojiNames" dyaycha aani oninput function change karyacha
 function addRow() {
     var table = document.getElementById("table");
     var row = table.insertRow();
     
     var timeValue = typeof defaultSessionTime !== 'undefined' ? defaultSessionTime : '';
 
-    // Fakt name sathi oninput function thevla ahe, baki donhi la direct 'list' attribute dila ahe
     row.innerHTML = `
         <td>
-            <input type="text" name="name[]" 
+            <input type="text" name="name[]" list="khojiNames" 
                    placeholder="Name (English)" 
-                   oninput="handleSuggestion(this, 'khojiNames')" autocomplete="off" required>
+                   oninput="filterNames(this)" autocomplete="off" required>
         </td>
         <td>
             <input type="text" name="batch[]" list="khojiBatches" placeholder="Batch" autocomplete="off">
@@ -43,6 +63,7 @@ function addRow() {
     `;
 }
 
+// (Tujhe countGender aani disableBtn functions jasache tase thev)
 function countGender() {
     var genders = document.querySelectorAll("select[name='gender[]']");
     var male = 0;
