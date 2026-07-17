@@ -20,7 +20,7 @@ function addRow() {
     
     var timeValue = typeof defaultSessionTime !== 'undefined' ? defaultSessionTime : '';
 
-    // autocomplete="off" 
+    // Fakt name sathi oninput function thevla ahe, baki donhi la direct 'list' attribute dila ahe
     row.innerHTML = `
         <td>
             <input type="text" name="name[]" 
@@ -28,14 +28,10 @@ function addRow() {
                    oninput="handleSuggestion(this, 'khojiNames')" autocomplete="off" required>
         </td>
         <td>
-            <input type="text" name="batch[]" 
-                   placeholder="Batch" 
-                   oninput="handleSuggestion(this, 'khojiBatches')" autocomplete="off">
+            <input type="text" name="batch[]" list="khojiBatches" placeholder="Batch" autocomplete="off">
         </td>
         <td>
-            <input type="text" name="mobile[]" 
-                   placeholder="Mobile" 
-                   oninput="handleSuggestion(this, 'khojiMobiles')" autocomplete="off">
+            <input type="text" name="mobile[]" list="khojiMobiles" placeholder="Mobile" autocomplete="off">
         </td>
         <td><input type="text" name="time[]" value="${timeValue}"></td>
         <td>
@@ -46,7 +42,6 @@ function addRow() {
         </td>
     `;
 }
-
 
 function countGender() {
     var genders = document.querySelectorAll("select[name='gender[]']");
