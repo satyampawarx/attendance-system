@@ -65,6 +65,31 @@ th, td {
     text-align: center;
 }
 
+/* Mobile var attendee table squish/multi-line-wrap honyapasun vachavnya sathi:
+   ha table horizontally scroll hoईl, pan register cha look/format kharaab honar nahi. */
+.table-scroll {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.attendee-th th,
+.attendee-row td {
+    white-space: nowrap;
+}
+
+@media only screen and (max-width: 600px) {
+    #reportContent table {
+        min-width: 640px;
+    }
+    #reportContent {
+        padding: 12px;
+    }
+    th, td {
+        font-size: 12.5px;
+        padding: 6px;
+    }
+}
+
 .title-row {
     background: #d9d9d9;
     font-size: 18px;
@@ -140,6 +165,7 @@ th, td {
         <div style="font-size: 20px; font-weight: 600; color: #555; margin-top: 5px;">तेजस्थान</div>
     </div>
 
+    <div class="table-scroll">
     <table border="1" width="100%">
 
 <tr class="title-row">
@@ -171,7 +197,7 @@ th, td {
 <td colspan="5"></td>
 </tr>
 
-<tr class="header-blue">
+<tr class="header-blue attendee-th">
 <th>अ. क्र.</th>
 <th>खोजी का नाम</th>
 <th>बैच</th>
@@ -185,7 +211,7 @@ while ($row = pg_fetch_assoc($result)) {
     if ($row['gender'] == 'Male') $male++;
     else $female++;
 
-    echo "<tr>
+    echo "<tr class='attendee-row'>
     <td>" . $i++ . "</td>
     <td>" . h($row['name']) . "</td>
     <td>" . h($row['batch']) . "</td>
@@ -214,6 +240,7 @@ while ($row = pg_fetch_assoc($result)) {
 </tr>
 
 </table>
+    </div>
 
 </div>
 
